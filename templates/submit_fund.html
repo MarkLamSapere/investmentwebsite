@@ -1,0 +1,146 @@
+
+{% block content %}
+<div class="container">
+    <h1>Submit PE Fund</h1>
+    <form method="POST" action="/submit_fund" class="form">
+        {{ form.hidden_tag() }}
+        {{ form.csrf_token }}
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                {{ form.fundname.label(class="control-label") }}
+                {{ form.fundname(class="form-control") }}
+            </div>
+
+            <div class="form-group col-md-6">
+                {{ form.vintageyear.label(class="control-label") }}
+                {{ form.vintageyear(class="form-control") }}
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                {{ form.fundsize.label(class="control-label") }}
+                {{ form.fundsize(class="form-control") }}
+            </div>
+
+            <div class="form-group col-md-6">
+                {{ form.fundfocus.label(class="control-label") }}
+                {{ form.fundfocus(class="form-control") }}
+            </div>
+        </div>
+
+        <!-- Repeat the form-row and form-group blocks for other fields -->
+
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+        	{{ form.geographicfocus.label(class="form-control-label") }}
+        	{{ form.geographicfocus(class="form-control") }}            
+	    </div>
+
+            <div class="form-group col-md-6">
+        	{{ form.generalpartner.label(class="form-control-label") }}
+        	{{ form.generalpartner(class="form-control") }}           
+	   </div>
+        </div>
+
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+        	{{ form.fundmanager.label(class="form-control-label") }}
+        	{{ form.fundmanager(class="form-control") }}       
+	    </div>
+
+            <div class="form-group col-md-6">
+        	{{ form.fundadministrator.label(class="form-control-label") }}
+        	{{ form.fundadministrator(class="form-control") }}    
+	   </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+        	{{ form.fundlegalstructure.label(class="form-control-label") }}
+       		{{ form.fundlegalstructure(class="form-control") }}      
+	    </div>
+
+            <div class="form-group col-md-6">
+        	{{ form.funddomicile.label(class="form-control-label") }}
+        	{{ form.funddomicile(class="form-control") }}  
+	    </div>
+        </div>
+
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+        	{{ form.funddocuments.label(class="form-control-label") }}
+        	{{ form.funddocuments(class="form-control") }}	    
+	  </div>
+
+            <div class="form-group col-md-6">
+        	{{ form.fundstatus.label(class="form-control-label") }}
+        	{{ form.fundstatus(class="form-control") }}	    
+	    </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+        	{{ form.fundstrategy.label(class="form-control-label") }}
+       		{{ form.fundstrategy(class="form-control") }}	  
+	    </div>
+
+            <div class="form-group col-md-6">
+        	{{ form.feestructure.label(class="form-control-label") }}
+        	{{ form.feestructure(class="form-control") }}    
+	    </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+        	{{ form.regulatorycompliance.label(class="form-control-label") }}
+        	{{ form.regulatorycompliance(class="form-control") }}  
+	    </div>
+
+            <div class="form-group col-md-6">
+        	{{ form.auditfirm.label(class="form-control-label") }}
+        	{{ form.auditfirm(class="form-control") }}  
+	    </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+        	{{ form.lastauditdate.label(class="form-control-label") }}
+        	{{ form.lastauditdate(class="form-control") }}	    
+	    </div>
+
+            <div class="form-group col-md-6">
+        	{{ form.investorrelationscontact.label(class="form-control-label") }}
+        	{{ form.investorrelationscontact(class="form-control") }} 
+	    </div>
+        </div>
+
+
+
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                {{ form.expectedliquidationdate.label(class="control-label") }}
+                {{ form.expectedliquidationdate(class="form-control") }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Submit</button>
+	    <button type="button" class="btn btn-secondary" onclick="closeForm()">Close</button>
+        </div>
+    </form>
+<script>
+    function closeForm() {
+        // Get a reference to the form element
+        var form = document.querySelector('.form');
+
+        // Hide the form by setting its display property to 'none'
+        form.style.display = 'none';
+    }
+</script>
+</div>
+{% endblock %}

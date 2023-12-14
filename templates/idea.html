@@ -1,0 +1,219 @@
+{% extends "main_page.html" %}
+
+{% block content %}
+    <h2>Idea Page</h2>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+
+
+    <hr>
+
+    <h3>Investment Ideas:</h3>
+    <table id="IdeaTable" class="display">
+        <thead>
+            <tr>
+                <th style="width: 10%;">Insert Date</th>
+                <th style="width: 10%;">Stock</th>
+                <th style="width: 10%;">Idea Type</th>
+                <th style="width: 10%;">Analyst</th>
+                <th style="width: 50%;">Details</th>
+	     <th style="width: 5%;"></th>
+	     <th style="width: 5%;"></th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for idea in ideas %}
+            <tr>
+                <td>{{ idea.insert_date }}</td>
+                <td>{{ idea.stock }}</td>
+                <td>{{ idea.idea_type }}</td>
+                <td>{{ idea.analyst }}</td>
+                <td>{{ idea.details|replace('\n', '<br>')|safe }}</td>
+
+	    <td>
+        	    	<button class="btn btn-primary btn-sm" onclick="editIdea('{{ idea.id }}')">Edit</button>  	 
+	 </td>
+
+   	    <td>
+        		<button class="btn btn-danger btn-sm" onclick="deleteIdea('{{ idea.id }}')">Delete</button>
+	    </td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+<div class="overlay" onclick="closePopup()"></div>
+
+<div class="popup">
+    <!-- Include the form content from submit_fund.html here -->
+    <h1></h1>
+    <form method="POST" action="/submit_fund">
+        <!-- Form fields go here -->
+        <!-- Submit button goes here -->
+    </form>
+</div>
+<div class="popup_update">
+    <!-- Include the edit form content here -->
+    <h1></h1>
+    <form method="POST" action="/editIdea">
+        <!-- Form fields go here -->
+        <!-- Submit button goes here -->
+    </form>
+
+</div>
+
+  <!-- Add a button to open the pop-up form -->
+  <button id="openSubmitForm">Add New Idea</button>
+
+
+    <script>
+        $(document).ready(function () {
+            $('#ideaTable').DataTable();
+        });
+    </script>
+
+
+    <script>
+
+	function editIdea(ideaId) {
+    	// Show the overlay
+   	 document.querySelector('.overlay').style.display = 'block';
+
+    	// Fetch the content of the edit idea form and insert it into the popup div
+    	fetch('/edit_idea/' + ideaId)
+        	.then(response => response.text())
+        	.then(data => {
+            document.querySelector('.popup').innerHTML = data;
+       	 });
+
+    	// Show the popup form
+    	document.querySelector('.popup').style.display = 'block';
+	}
+
+
+
+ </script>
+
+<script>
+    document.getElementById('openSubmitForm').addEventListener('click', function() {
+        // Show the overlay
+        document.querySelector('.overlay').style.display = 'block';
+
+        // Fetch the content of submit_fund.html and insert it into the popup div
+        fetch('/submit_idea') // Replace with the appropriate URL for your route
+            .then(response => response.text())
+            .then(data => {
+                document.querySelector('.popup').innerHTML = data;
+            });
+
+        // Show the popup form
+        document.querySelector('.popup').style.display = 'block';
+    });
+
+
+   
+
+
+</script>
+
+<script>
+    function closeForm() {
+        // Hide the overlay and the popup
+        document.querySelector('.overlay').style.display = 'none';
+        document.querySelector('.popup').style.display = 'none';
+    }
+</script>
+
+<!-- Modal -->
+<div class="modal fade" id="IdeaDetailsModal" tabindex="-1" role="dialog" aria-labelledby="IdeaDetailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="IdeaDetailsModalLabel">Idea Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Content to display fund details goes here -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+function deleteIdea(ideaId) {
+    console.log('Delete button clicked. Idea ID:', ideaId);
+    $.ajax({
+        url: '/delete_idea/' + ideaId,
+        type: 'DELETE',
+        success: function () {
+            // This function will be executed if the deletion is successful
+            // Remove the deleted idea row from the DataTable
+            var table = $('#IdeaTable').DataTable();
+            var row = table.row($('#' + ideaId));
+            $('#IdeaTable').DataTable().row($('#' + ideaId)).remove().draw();
+	console.log('Delete button clicked with redirect. Idea ID:', ideaId);
+
+ 	window.location.href = '/idea';
+        },
+        error: function (xhr, status, error) {
+            // This function will be executed if there is an error during deletion
+            console.error('Error deleting idea:', status, error);
+            // Optionally, you can show an error message to the user
+            alert('Error deleting idea. Please try again later.');
+        }
+    });
+}
+	
+</script>
+
+
+<script>
+
+$(document).ready(function () {
+    // Initialize the DataTable
+    var table = $('#IdeaTable').DataTable();
+
+    // Handle row click event
+    //$('#IdeaTable tbody').on('click', 'tr', function () {
+        // Get the clicked row data
+      //  var data = table.row(this).data();
+
+        // Populate modal with data and show it
+       // displayDetailsInModal(data);
+    //});
+
+    // Function to display details in the modal
+    function displayDetailsInModal(data) {
+        // Modify this function to format and display your fund details
+    var detailsHtml = '<p>Insert Date: ' + data[0] + '</p>' +
+                      '<p>Stock: ' + data[1] + '</p>' +
+                      '<p>Idea type: ' + data[2] + '</p>'  +
+                      '<p>Analyst: ' + data[3] + '</p>'  + 
+                      '<p>Details: ' + data[4] + '</p>'    
+                
+
+
+                          // Add more details as needed
+
+        // Set the modal content
+        $('#IdeaDetailsModal .modal-body').html(detailsHtml);
+         event.preventDefault();
+         jQuery.noConflict();
+        // Show the modal
+        $('#IdeaDetailsModal').modal('show');
+    }
+});
+
+
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends "main_page.html" %}
+
+{% block content %}
+
+<h1>Fund Details</h1>
+<table id="fund-table" class="display">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Description</th>
+            <th>Fund Type</th>
+            <th>Benchmark</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for fund in funds %}
+        <tr class="fund-row" data-fund-name="{{ fund.name }}">
+            <td data-fund-name="{{ fund.name }}">{{ fund.name }}</td>
+            <td>{{ fund.status }}</td>
+            <td>{{ fund.fund_description }}</td>
+            <td>{{ fund.fund_type }}</td>
+            <td>{{ fund.benchmark }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div id="chart_div"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#fund-table').DataTable({
+            // Enable sorting
+            "order": [[0, "asc"]], // Sort the first column (Name) in ascending order
+
+            // Enable filtering
+            "searching": true,
+
+            // Set the number of records to display per page
+            "pageLength": 10
+        });
+    });
+
+    // Function to load the chart using AJAX
+    function loadChart(fundName) {
+        console.log("loadChart function started.");
+    
+        fetch(`/fund_chart/${fundName}`)
+            .then(response => response.json())
+            .then(chartData => {
+                console.log("Chart data received:", chartData);
+                var chartDiv = document.getElementById("chart_div");
+
+                // Update the layout to change the size of the chart
+                var chartLayout = chartData.layout;
+                chartLayout.height = 400; // Set the desired height in pixels
+                chartLayout.width = 600; // Set the desired width in pixels
+
+
+                if (chartDiv.innerHTML.trim() === '') {
+                    // First click - create a new Plotly chart
+                    console.log("Creating a new chart...");
+                    
+                    // Format y-axis tick labels with two decimal places
+                    var tickformat = '.2%';
+                    chartData.layout.yaxis.tickformat = tickformat;
+                    Plotly.newPlot(chartDiv, chartData.data, chartData.layout);
+                } else {
+                    // Subsequent clicks - update the existing chart
+
+                    // Format y-axis tick labels with two decimal places
+                    var tickformat = '.2%';
+                    chartData.layout.yaxis.tickformat = tickformat;
+            
+                    console.log("Updating the chart...");
+                    Plotly.react(chartDiv, chartData.data, chartData.layout);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching chart:', error);
+            });
+    }
+
+// Attach click event to each fund row in the table
+document.addEventListener('DOMContentLoaded', function () {
+    var fundRows = document.querySelectorAll("table tr.fund-row");
+    for (var i = 0; i < fundRows.length; i++) {
+        var fundName = fundRows[i].getAttribute("data-fund-name");
+        fundRows[i].addEventListener("click", function () {
+            var fundName = this.getAttribute("data-fund-name"); // Use 'this' to get the clicked row's fund name
+            console.log("Fund row clicked:", fundName);
+            loadChart(fundName);
+        });
+    }
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "main_page.html" %}
+
+{% block content %}
+    <h2>Idea Page</h2>
+
+    <!-- Form to allow user input investment idea -->
+    <form method="POST" action="/save_idea">
+        <label for="stock">Stock:</label>
+        <input type="text" name="stock" required><br>
+
+        <label for="idea_type">Idea Type:</label>
+        <select name="idea_type" required>
+            <option value="Buy">Buy</option>
+            <option value="Sell">Sell</option>
+            <option value="Hold">Hold</option>
+        </select><br>
+
+        <label for="details">Details:</label>
+        <textarea name="details" required></textarea><br>
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <hr>
+
+    <!-- Display the list of ideas from the database -->
+    <h3>My Investment Ideas:</h3>
+    <ul>
+        {% for idea in ideas %}
+        <li>{{ idea.stock }} - {{ idea.idea_type }}: {{ idea.details }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

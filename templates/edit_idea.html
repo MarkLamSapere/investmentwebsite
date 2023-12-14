@@ -1,0 +1,78 @@
+
+{% block content %}
+<div class="container">
+    <h1>Update Idea</h1>
+  <form method="POST" action="/edit_idea/{{ idea_id }}">
+        {{ form.hidden_tag() }}
+        {{ form.csrf_token }}
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                {{ form.stock.label(class="control-label") }}
+                {{ form.stock(class="form-control") }}
+            </div>
+
+         
+        </div>
+
+       <div class="form-row">
+          
+
+            <div class="form-group col-md-6">
+                {{ form.idea_type.label(class="control-label") }}
+                {{ form.idea_type(class="form-control") }}
+            </div>
+        </div>
+
+
+
+        <div class="form-row">
+         
+                {{ form.details.label(class="control-label") }}
+                 {{ form.details(class="form-control", rows=5) }} {# Adjust the 'rows' attribute to control the visible number of lines in the text box #}
+            
+
+        
+        </div>
+
+        <!-- Repeat the form-row and form-group blocks for other fields -->
+
+       <div class="form-row">
+          
+
+            <div class="form-group col-md-6">
+                {{ form.analyst.label(class="control-label") }}
+                {{ form.analyst(class="form-control") }}
+            </div>
+        </div>
+
+
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+        	{{ form.insert_date.label(class="form-control-label") }}
+        	{{ form.insert_date(class="form-control") }}            
+	    </div>
+
+       
+        </div>
+
+
+        <div class="form-group">
+   
+	<button type="submit" class="btn btn-primary">Update Idea</button>
+    	<button type="button" class="btn btn-secondary" onclick="closeForm()">Close</button>
+
+        </div>
+    </form>
+<script>
+    function closeForm() {
+        // Get a reference to the form element
+        var form = document.querySelector('.form');
+
+        // Hide the form by setting its display property to 'none'
+        form.style.display = 'none';
+    }
+</script>
+</div>
+{% endblock %}

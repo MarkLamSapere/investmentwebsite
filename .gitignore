@@ -1,0 +1,13 @@
+# Ignore log file
+*.log
+
+#ignore tempprary files
+.tmp/
+
+#ignore virtual environment folders (if applicable)
+
+venv/
+notebooknev
+
+#Ignore sensitive configuration files (modify as needed)
+config.ini

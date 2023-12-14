@@ -1,0 +1,228 @@
+{% extends "main_page.html" %}
+
+{% block content %}
+
+<body>
+
+    <!-- Include DataTables CSS and JavaScript -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+
+	
+
+    <h1>Private Equity Funds</h1>
+    <table  id="FundTable" class="display" >
+        <thead>
+            <tr>
+                <th>Fund Name</th>
+                <th>Vintage Year</th>
+                <th>Fund Size</th>
+                <th>Fund Focus</th>
+                <!-- Add more table headers for other fields -->
+                <th>Geographic Focus</th>
+                <th>General Partner</th>
+                <th>Fund Manager</th>
+ 	     <th>Fund Administrator</th>
+ 	     <th>Fund legal structure</th>	
+ 	     <th>Fund Domicile</th>	
+ 	     <th>Fund Documents</th>	
+ 	     <th>Fund Status</th>	
+ 	     <th>Fund Strategy</th>	
+ 	     <th>Regulatory Compliance</th>	
+ 	     <th>Last audit Date</th>	
+ 	     <th>Investor Relations Contact</th>	
+ 	     <th>Expected Liquidation Date</th>	      
+                <!-- Add headers for other fields as needed -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for fund in funds %}
+            <tr>
+                <td>{{ fund.fundname }}</td>
+                <td>{{ fund.vintageyear }}</td>
+                <td>{{ fund.fundsize }}</td>
+                <td>{{ fund.fundfocus }}</td>
+                <!-- Add more table cells for other fields -->
+                <td>{{ fund.geographicfocus }}</td>
+                <td>{{ fund.generalpartner }}</td>
+                <td>{{ fund.fundmanager }}</td>
+ 	     <td>{{ fund.fundadministrator }} </td>
+	     <td>{{ fund.fundlegalstructure }} </td>
+	     <td>{{ fund.funddomicile}} </td>
+	     <td>{{ fund.funddocuments}} </td>
+	     <td>{{ fund.fundstatus}} </td>
+	     <td>{{ fund.fundstrategy}} </td>
+	     <td>{{ fund.regulatorycompliance}} </td>
+	     <td>{{ fund.lastauditdate}} </td>
+	     <td>{{ fund.investorrelationscontact}} </td>
+	     <td>{{ fund.expectedliquidationdate}} </td>
+
+
+             
+                <!-- Add cells for other fields as needed -->
+            </tr>
+	
+	
+
+
+
+
+
+            {% endfor %}
+        </tbody>
+    </table>
+
+ <script>
+        $(document).ready(function () {
+            $('#FundTable').DataTable();
+        });
+    </script>
+
+ <script>
+
+// JavaScript to handle row click event
+const rows = document.querySelectorAll('#FundTable tbody tr');
+
+rows.forEach(row => {
+    row.addEventListener('click', () => {
+        const nextRow = row.nextElementSibling;
+        if (nextRow.classList.contains('hidden-details')) {
+            nextRow.classList.toggle('hidden');
+        }
+    });
+});
+
+</script>
+<div class="overlay" onclick="closePopup()"></div>
+
+<div class="popup">
+    <!-- Include the form content from submit_fund.html here -->
+    <h1>Submit PE Fund</h1>
+    <form method="POST" action="/submit_fund">
+        <!-- Form fields go here -->
+        <!-- Submit button goes here -->
+    </form>
+</div>
+
+
+  <!-- Add a button to open the pop-up form -->
+  <button id="openSubmitForm">Add New PE Fund</button>
+  <button id="closeSubmitForm">Close Form</button>
+
+
+<!-- Modal -->
+<div class="modal fade" id="fundDetailsModal" tabindex="-1" role="dialog" aria-labelledby="fundDetailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="fundDetailsModalLabel">Fund Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Content to display fund details goes here -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Your DataTable structure -->
+<table id="FundTable" class="display">
+    <!-- Table headers and rows go here -->
+</table>
+
+
+<script>
+    document.getElementById('openSubmitForm').addEventListener('click', function() {
+        // Show the overlay
+        document.querySelector('.overlay').style.display = 'block';
+
+        // Fetch the content of submit_fund.html and insert it into the popup div
+        fetch('/submit_fund') // Replace with the appropriate URL for your route
+            .then(response => response.text())
+            .then(data => {
+                document.querySelector('.popup').innerHTML = data;
+            });
+
+        // Show the popup form
+        document.querySelector('.popup').style.display = 'block';
+    });
+
+
+    // Function to close the pop-up
+     document.getElementById('closeSubmitForm').addEventListener('click', function closePopup() {
+        document.querySelector('.overlay').style.display = 'none';
+        document.querySelector('.popup').style.display = 'none';
+    });
+
+
+</script>
+
+<script>
+    function closeForm() {
+        // Hide the overlay and the popup
+        document.querySelector('.overlay').style.display = 'none';
+        document.querySelector('.popup').style.display = 'none';
+    }
+</script>
+
+<script>
+
+$(document).ready(function () {
+    // Initialize the DataTable
+    var table = $('#FundTable').DataTable();
+
+    // Handle row click event
+    $('#FundTable tbody').on('click', 'tr', function () {
+        // Get the clicked row data
+        var data = table.row(this).data();
+
+        // Populate modal with data and show it
+        displayDetailsInModal(data);
+    });
+
+    // Function to display details in the modal
+    function displayDetailsInModal(data) {
+        // Modify this function to format and display your fund details
+    var detailsHtml = '<p>Fund Name: ' + data[0] + '</p>' +
+                      '<p>Vintage Year: ' + data[1] + '</p>' +
+                      '<p>Fund Size: ' + data[2] + '</p>'  +
+                      '<p>Fund Focus: ' + data[3] + '</p>'  + 
+                      '<p>Geographic Focus: ' + data[4] + '</p>'  +  
+                      '<p>General Partner: ' + data[5] + '</p>'  +  
+                      '<p>Fund Manager: ' + data[6] + '</p>'  +  
+                      '<p>Fund Administrator: ' + data[7] + '</p>'  +  
+                      '<p>Fund legal structure: ' + data[8] + '</p>'  +  
+                      '<p>Fund Domicile: ' + data[9] + '</p>'  +  
+                      '<p>Fund Documents: ' + data[10] + '</p>'  +  
+                      '<p>Fund Status: ' + data[11] + '</p>' +  
+                      '<p>Fund Strategy: ' + data[12] + '</p>' +  
+                      '<p>Regulatory Compliance: ' + data[13] + '</p>' +  
+                      '<p>Last audit Date: ' + data[14] + '</p>' +  
+                      '<p>Investor Relations Contact: ' + data[15] + '</p>' + 
+		'<p>Expected Liquidation Date: ' + data[16] + '</p>'; 
+
+
+                          // Add more details as needed
+
+        // Set the modal content
+        $('#fundDetailsModal .modal-body').html(detailsHtml);
+         event.preventDefault();
+         jQuery.noConflict();
+        // Show the modal
+        $('#fundDetailsModal').modal('show');
+    }
+});
+
+
+</script>
+
+
+
+</body>
+{% endblock %}

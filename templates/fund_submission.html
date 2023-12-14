@@ -1,0 +1,19 @@
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+        {{ form.fund_name.label }} {{ form.fund_name(size=40) }}
+    </div>
+    <div class="form-group">
+        {{ form.vintage_year.label }} {{ form.vintage_year }}
+    </div>
+    <div class="form-group">
+        {{ form.fund_size.label }} {{ form.fund_size }}
+    </div>
+    <div class="form-group">
+        {{ form.fund_focus.label }} {{ form.fund_focus(size=40) }}
+    </div>
+    <!-- Add more form fields for other fund details as needed -->
+    <div class="form-group">
+        {{ form.submit(class="btn btn-primary") }}
+    </div>
+</form>

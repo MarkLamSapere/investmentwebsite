@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <!-- Other meta tags, stylesheets, and scripts -->
+
+
+    <!-- Add jQuery -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <!-- Add the DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css">
+	<!-- Include Bootstrap CSS from a CDN -->
+       
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+	<!-- Include Bootstrap JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
+    <!-- Add the DataTables JS -->
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.js"></script>
+ 	<!-- Your other CSS files, if any -->
+    <link rel="stylesheet" href="../static/custom-styles.css">
+   
+    <!-- Your other meta tags and title -->
+    <style>
+        /* Add custom styles for the table */
+        table.dataTable {
+            font-size: 12px; /* Adjust the font size as needed */
+        }
+    </style>
+
+    <title>Main Page</title>
+    <style>
+        /* Basic styling for the navigation bar */
+        ul.navbar {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            background-color: #f1f1f1;
+            overflow: hidden;
+        }
+
+        li.navitem {
+            float: left;
+        }
+
+        li.navitem a {
+            display: block;
+            color: black;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        li.navitem a:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Welcome, {{ session['user'] }}</h1>
+        <ul class="navbar">
+            <li class="navitem"><a href="/idea">Idea</a></li>
+	   <li  class="navitem"><a href="/pe_funds">PE Fund</a></li>
+
+            <li class="navitem"><a href="/stock_research">Stock Research</a></li>
+            <li class="navitem"><a href="/portfolio">Portfolio</a></li>
+	    <li  class="navitem"><a href="/fund_details">Fund Details</a></li>
+
+        </ul>
+    </div>
+    <div>
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
